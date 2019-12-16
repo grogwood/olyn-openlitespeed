@@ -1,0 +1,33 @@
+enableCoreDump          1
+sessionTimeout          3600
+
+errorlog $SERVER_ROOT/admin/logs/error.log {
+  useServer             0
+  logLevel              INFO
+  rollingSize           10M
+}
+
+accessLog $SERVER_ROOT/admin/logs/access.log {
+  useServer             0
+  rollingSize           10M
+  keepDays              90
+  logReferer            1
+  logUserAgent          1
+}
+
+accessControl {
+  allow                 ALL
+}
+
+listener adminListener {
+  address               *:<%= @webadmin_ports_item[:port] %>
+  secure                1
+  keyFile               <%= @ssl_certificates_item[:certificates]['private_key']['file'] %>
+  certFile              <%= @ssl_certificates_item[:certificates]['certificate']['file'] %>
+  certChain             <%= @ssl_certificates_item[:chain] ? 1 : 0 %>
+  <% if @ssl_certificates_item[:certificates]['authority']['file'] -%>
+  CACertFile            <%= @ssl_certificates_item[:certificates]['authority']['file'] %>
+  <% end -%>
+  sslProtocol           28
+  clientVerify          0
+}
