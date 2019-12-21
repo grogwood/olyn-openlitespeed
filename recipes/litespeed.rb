@@ -1,10 +1,9 @@
 # Include the common recipe
 include_recipe 'olyn_litespeed::common'
 
-# TODO: Replace the force-yes with a seed file of responses
 # Install the base openlitespeed package
 package 'openlitespeed' do
-  options '--force-yes'
+  options '-q -y'
   action :install
 end
 
