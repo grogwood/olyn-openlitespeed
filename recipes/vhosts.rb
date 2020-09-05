@@ -90,7 +90,6 @@ data_bag('litespeed_vhosts').each do |vhost_item|
                          rescue Net::HTTPServerException, Chef::Exceptions::InvalidDataBagPath
                            []
                          end
-
     )
     notifies :restart, 'service[litespeed]', :delayed
   end
