@@ -2,224 +2,270 @@
 # PLAIN TEXT CONFIGURATION FILE
 #
 
-serverName                   <%= @server_name %>
-user                         <%= @runner_item[:username] %>
-group                        <%= @runner_item[:groups]['primary'] %>
-priority                     0
-autoRestart                  1
-chrootPath                   /
-enableChroot                 0
-inMemBufSize                 120M
-swappingDir                  /tmp/lshttpd/swap
-autoFix503                   1
-gracefulRestartTimeout       300
-mime                         $SERVER_ROOT/conf/mime.properties
-showVersionNumber            2
-useIpInProxyHeader           2
-adminEmails                  <%= @runner_item[:email] %>
-indexFiles                   index.php, index.html, index.htm
+#It not set, will use host name as serverName
+serverName                       <%= @server_name %>
+user                             <%= @runner_item[:username] %>
+group                            <%= @runner_item[:groups]['primary'] %>
+priority                         0
+autoRestart                      1
+chrootPath                       /
+enableChroot                     0
+inMemBufSize                     <%= @server_configs[:memory_io_buffer] %>
+swappingDir                      /tmp/lshttpd/swap
+autoFix503                       1
+gracefulRestartTimeout           300
+mime                             conf/mime.properties
+showVersionNumber                <%= @server_configs[:show_version_number] %>
+useIpInProxyHeader               <%= @server_configs[:use_ip_in_proxy_header] %>
+adminEmails                      <%= @runner_item[:email] %>
+indexFiles                       <%= @server_configs[:olyn_litespeed][:server_configs][:index_files] %>
+disableWebAdmin                  0
 
-errorlog $SERVER_ROOT/logs/error.log {
-  logLevel                   DEBUG
-  debugLevel                 0
-  rollingSize                10M
-  enableStderrLog            1
+errorlog logs/error.log {
+        logLevel             DEBUG
+        debugLevel           0
+        rollingSize          10M
+        enableStderrLog      1
 }
 
-accessLog $SERVER_ROOT/logs/access.log {
-  rollingSize                10M
-  keepDays                   30
-  compressArchive            0
-  logReferer                 1
-  logUserAgent               1
+accessLog logs/access.log {
+        rollingSize          10M
+        keepDays             30
+        compressArchive      0
+        logReferer           1
+        logUserAgent         1
 }
 
 expires {
-  enableExpires              1
-  expiresByType              image/*=A604800, text/css=A604800, text/javascript=A604800, application/*=A604800, font/*=A604800
+    enableExpires           1
+    expiresByType           image/*=A604800,text/css=A604800,application/x-javascript=A604800,application/javascript=A604800,font/*=A604800,application/x-font-ttf=A604800
 }
 
-tuning {
-  maxConnections             2000
-  maxSSLConnections          1000
-  connTimeout                300
-  maxKeepAliveReq            1000
-  smartKeepAlive             0
-  keepAliveTimeout           5
-  sndBufSize                 0
-  rcvBufSize                 0
-  gzipStaticCompressLevel    6
-  gzipMaxFileSize            1M
-  eventDispatcher            best
-  maxCachedFileSize          4096
-  totalInMemCacheSize        20M
-  maxMMapFileSize            256K
-  totalMMapCacheSize         40M
-  useSendfile                1
-  fileETag                   28
-  SSLCryptoDevice            null
-  maxReqURLLen               8192
-  maxReqHeaderSize           16380
-  maxReqBodySize             2047M
-  maxDynRespHeaderSize       8192
-  maxDynRespSize             2047M
-  enableGzipCompress         1
-  enableDynGzipCompress      1
-  gzipCompressLevel          9
-  compressibleTypes          text/*,application/x-javascript,application/javascript,application/xml,image/svg+xml
-  gzipAutoUpdateStatic       1
-  gzipMinFileSize            300
+tuning{
+    maxConnections               10000
+    maxSSLConnections            10000
+    connTimeout                  300
+    maxKeepAliveReq              10000
+    smartKeepAlive               0
+    keepAliveTimeout             5
+    sndBufSize                   0
+    rcvBufSize                   0
+    gzipStaticCompressLevel      6
+    gzipMaxFileSize              10M
+    eventDispatcher              best
+    maxCachedFileSize            4096
+    totalInMemCacheSize          20M
+    maxMMapFileSize              256K
+    totalMMapCacheSize           40M
+    useSendfile                  1
+    fileETag                     28
+    SSLCryptoDevice              null
+    maxReqURLLen                 32768
+    maxReqHeaderSize             65536
+    maxReqBodySize               2047M
+    maxDynRespHeaderSize         32768
+    maxDynRespSize               2047M
+    enableGzipCompress           1
+    enableBrCompress             4
+    enableDynGzipCompress        1
+    gzipCompressLevel            6
+    brStaticCompressLevel        6
+    compressibleTypes            default
+    gzipAutoUpdateStatic         1
+    gzipMinFileSize              300
+
+    quicEnable                   1
+    quicShmDir                   /dev/shm
+
 }
 
-accessDenyDir {
-  dir                        /
-  dir                        /etc/*
-  dir                        /dev/*
-  dir                        $SERVER_ROOT/conf/*
-  dir                        $SERVER_ROOT/admin/conf/*
+accessDenyDir{
+    dir                  /
+    dir                  /etc/*
+    dir                  /dev/*
+    dir                  conf/*
+    dir                  admin/conf/*
 }
 
-fileAccessControl {
-  followSymbolLink           1
-  checkSymbolLink            0
-  requiredPermissionMask     000
-  restrictedPermissionMask   000
+fileAccessControl{
+    followSymbolLink                            1
+    checkSymbolLink                             0
+    requiredPermissionMask                      000
+    restrictedPermissionMask                    000
 }
 
-perClientConnLimit {
-  staticReqPerSec            0
-  dynReqPerSec               0
-  outBandwidth               0
-  inBandwidth                0
-  softLimit                  10000
-  hardLimit                  10000
-  gracePeriod                15
-  banPeriod                  300
+perClientConnLimit{
+    staticReqPerSec                          0
+    dynReqPerSec                             0
+    outBandwidth                             0
+    inBandwidth                              0
+    softLimit                                10000
+    hardLimit                                10000
+    gracePeriod                              15
+    banPeriod                                300
 }
 
-CGIRLimit {
-  maxCGIInstances            20
-  minUID                     11
-  minGID                     10
-  priority                   0
-  CPUSoftLimit               10
-  CPUHardLimit               50
-  memSoftLimit               460M
-  memHardLimit               470M
-  procSoftLimit              400
-  procHardLimit              450
+CGIRLimit{
+    maxCGIInstances                         20
+    minUID                                  11
+    minGID                                  10
+    priority                                0
+    CPUSoftLimit                            10
+    CPUHardLimit                            50
+    memSoftLimit                            1460M
+    memHardLimit                            1470M
+    procSoftLimit                           400
+    procHardLimit                           450
 }
 
-accessControl {
-  allow                      ALL, 127.0.0.1T
-  deny
+accessControl{
+	allow                                   ALL
+	deny
 }
 
-extProcessor <%= @php_packages_item[:options][:base] %> {
-  type                       lsapi
-  address                    uds://tmp/lshttpd/<%= @php_packages_item[:options][:base] %>.sock
-  maxConns                   35
-  env                        PHP_LSAPI_MAX_REQUESTS=500
-  env                        PHP_LSAPI_CHILDREN=35
-  initTimeout                60
-  retryTimeout               0
-  persistConn                1
-  pcKeepAliveTimeout
-  respBuffer                 0
-  autoStart                  1
-  runOnStartUp               2
-  path                       $SERVER_ROOT/fcgi-bin/<%= @php_packages_item[:options][:base] %>
-  backlog                    100
-  instances                  1
-  priority                   0
-  memSoftLimit               2047M
-  memHardLimit               2047M
-  procSoftLimit              400
-  procHardLimit              500
+extProcessor <%= @php_packages_item[:options][:base] %>{
+    type                            lsapi
+    address                         uds://tmp/lshttpd/<%= @php_packages_item[:options][:base] %>.sock
+    maxConns                        10
+    env                             PHP_LSAPI_CHILDREN=10
+    env                             LSAPI_AVOID_FORK=200M
+    initTimeout                     60
+    retryTimeout                    0
+    persistConn                     1
+    pcKeepAliveTimeout
+    respBuffer                      0
+    autoStart                       1
+    path                            <%= @php_packages_item[:options][:base] %>/bin/lsphp
+    backlog                         100
+    instances                       1
+    priority                        0
+    memSoftLimit                    2047M
+    memHardLimit                    2047M
+    procSoftLimit                   1400
+    procHardLimit                   1500
 }
 
-scriptHandler {
-  add                        lsapi:<%= @php_packages_item[:options][:base] %> php
+scriptHandler{
+    add lsapi:<%= @php_packages_item[:options][:base] %>  php
 }
 
-railsDefaults {
-  railsEnv                   1
-  maxConns                   5
-  env                        LSAPI_MAX_REQS=1000
-  env                        LSAPI_MAX_IDLE=60
-  initTimeout                60
-  retryTimeout               0
-  pcKeepAliveTimeout         60
-  respBuffer                 0
-  backlog                    50
-  runOnStartUp               1
-  extMaxIdleTime             300
-  priority                   3
-  memSoftLimit               2047M
-  memHardLimit               2047M
-  procSoftLimit              500
-  procHardLimit              600
+railsDefaults{
+    binPath
+    railsEnv                 1
+    maxConns                 1
+    env                      LSAPI_MAX_IDLE=60
+    initTimeout              60
+    retryTimeout             0
+    pcKeepAliveTimeout       60
+    respBuffer               0
+    backlog                  50
+    runOnStartUp             3
+    extMaxIdleTime           300
+    priority                 3
+    memSoftLimit             2047M
+    memHardLimit             2047M
+    procSoftLimit            500
+    procHardLimit            600
+}
+
+wsgiDefaults{
+    binPath
+    railsEnv                 1
+    maxConns                 5
+    env                      LSAPI_MAX_IDLE=60
+    initTimeout              60
+    retryTimeout             0
+    pcKeepAliveTimeout       60
+    respBuffer               0
+    backlog                  50
+    runOnStartUp             3
+    extMaxIdleTime           300
+    priority                 3
+    memSoftLimit             2047M
+    memHardLimit             2047M
+    procSoftLimit            500
+    procHardLimit            600
+}
+
+nodeDefaults{
+    binPath
+    railsEnv                 1
+    maxConns                 5
+    env                      LSAPI_MAX_IDLE=60
+    initTimeout              60
+    retryTimeout             0
+    pcKeepAliveTimeout       60
+    respBuffer               0
+    backlog                  50
+    runOnStartUp             3
+    extMaxIdleTime           300
+    priority                 3
+    memSoftLimit             2047M
+    memHardLimit             2047M
+    procSoftLimit            500
+    procHardLimit            600
 }
 
 <% @vhosts_data_bag.each do |vhost_item| -%>
 <% vhost = Chef::DataBagItem.load( 'litespeed_vhosts', vhost_item )-%>
-virtualHost <%= vhost[:name] %> {
-  vhRoot                     <%= node[:olyn_litespeed][:www_path] %><%= vhost[:name] %>/
-  allowSymbolLink            1
-  enableScript               1
-  restrained                 1
-  maxKeepAliveReq
-  smartKeepAlive
-  setUIDMode                 0
-  chrootMode                 0
-  configFile                 $SERVER_ROOT/conf/vhosts/<%= vhost[:name] %>/<%= vhost[:name] %>.conf
+virtualHost <%= vhost[:name] %>{
+    vhRoot                   <%= node[:olyn_litespeed][:www_path] %><%= vhost[:name] %>/
+    allowSymbolLink          1
+    enableScript             1
+    restrained               1
+    maxKeepAliveReq
+    smartKeepAlive
+    setUIDMode               0
+    chrootMode               0
+    configFile               conf/vhosts/<%= vhost[:name] %>/<%= vhost[:name] %>.conf
 }
 
 <% vhost[:listeners].each do |listener| -%>
 <% port = Chef::DataBagItem.load( 'ports', listener[:ports_data_bag_item] )-%>
-listener <%= listener[:name] %> {
-  address                    <%= listener[:host] %>:<%= port[:port] %>
-  secure                     <%= listener[:ssl] ? 1 : 0 %>
-  map                        <%= vhost[:name] %> *
-  <% if listener[:ssl] -%>
-  <% cert = Chef::EncryptedDataBagItem.load( 'ssl_certificates', listener[:ssl_certificates_data_bag_item] ) -%>
-  keyFile                    <%= cert[:certificates]['private_key']['file'] %>
-  certFile                   <%= cert[:certificates]['certificate']['file'] %>
-  certChain                  <%= cert[:chain] ? 1 : 0 %>
-  <% if cert[:certificates]['authority']['file'] -%>
-  CACertFile                 <%= cert[:certificates]['authority']['file'] %>
-  <% end -%>
-  sslProtocol                28
-  <% end -%>
+listener <%= listener[:name] %>{
+    address                  <%= listener[:host] %>:<%= port[:port] %>
+    secure                   <%= listener[:ssl] ? 1 : 0 %>
+    map                      <%= vhost[:name] %> *
+    <% if listener[:ssl] -%>
+    <% cert = Chef::EncryptedDataBagItem.load( 'ssl_certificates', listener[:ssl_certificates_data_bag_item] ) -%>
+    keyFile                  <%= cert[:certificates]['private_key']['file'] %>
+    certFile                 <%= cert[:certificates]['certificate']['file'] %>
+    certChain                <%= cert[:chain] ? 1 : 0 %>
+    <% if cert[:certificates]['authority']['file'] -%>
+    CACertFile               <%= cert[:certificates]['authority']['file'] %>
+    <% end -%>
+    <% end -%>
 }
 <% end -%>
 <% end -%>
+
+vhTemplate centralConfigLog{
+    templateFile             conf/templates/ccl.conf
+    listeners                Default
+}
+
+vhTemplate EasyRailsWithSuEXEC{
+    templateFile             conf/templates/rails.conf
+    listeners                Default
+}
 
 module cache {
-  ls_enabled          1
+    ls_enabled          1
 
-  checkPrivateCache   1
-  checkPublicCache    1
-  maxCacheObjSize     10000000
-  maxStaleAge         200
-  qsCache             1
-  reqCookieCache      1
-  respCookieCache     1
-  ignoreReqCacheCtrl  1
-  ignoreRespCacheCtrl 0
+    checkPrivateCache   1
+    checkPublicCache    1
+    maxCacheObjSize     10000000
+    maxStaleAge         200
+    qsCache             1
+    reqCookieCache      1
+    respCookieCache     1
+    ignoreReqCacheCtrl  1
+    ignoreRespCacheCtrl 0
 
-  enableCache         0
-  expireInSeconds     3600
-  enablePrivateCache  0
-  privateExpireInSeconds 3600
+    enableCache         0
+    expireInSeconds     3600
+    enablePrivateCache  0
+    privateExpireInSeconds 3600
+
 }
 
-vhTemplate centralConfigLog {
-  templateFile               $SERVER_ROOT/conf/templates/ccl.conf
-  listeners                  Default
-}
-
-vhTemplate EasyRailsWithSuEXEC {
-  templateFile               $SERVER_ROOT/conf/templates/rails.conf
-  listeners                  Default
-}
