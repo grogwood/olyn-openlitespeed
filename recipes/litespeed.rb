@@ -48,6 +48,7 @@ template "#{node[:olyn_litespeed][:install_path]}conf/httpd_config.conf" do
   group litespeed_service[:groups]['primary']
   variables(
     server_name:       node[:hostname],
+    server_configs:    node[:olyn_litespeed][:server_configs],
     php_packages_item: data_bag_item('packages', node[:olyn_litespeed][:php_packages_data_bag_item]),
     vhosts_data_bag:   data_bag('litespeed_vhosts'),
     runner_item:       data_bag_item('litespeed_users', node[:olyn_litespeed][:users][:runner_data_bag_item])
