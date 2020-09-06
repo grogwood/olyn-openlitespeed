@@ -10,15 +10,15 @@ priority                         0
 autoRestart                      1
 chrootPath                       /
 enableChroot                     0
-inMemBufSize                     <%= @server_configs[:memory_io_buffer] %>
+inMemBufSize                     <%= @memory_io_buffer %>
 swappingDir                      /tmp/lshttpd/swap
 autoFix503                       1
 gracefulRestartTimeout           300
 mime                             conf/mime.properties
-showVersionNumber                <%= @server_configs[:show_version_number] %>
-useIpInProxyHeader               <%= @server_configs[:use_ip_in_proxy_header] %>
+showVersionNumber                <%= @show_version_number %>
+useIpInProxyHeader               <%= @use_ip_in_proxy_header %>
 adminEmails                      <%= @runner_item[:email] %>
-indexFiles                       <%= @server_configs[:olyn_litespeed][:server_configs][:index_files] %>
+indexFiles                       <%= @index_files %>
 disableWebAdmin                  0
 
 errorlog logs/error.log {
