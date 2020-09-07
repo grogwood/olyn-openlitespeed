@@ -47,10 +47,14 @@ template "#{node[:olyn_litespeed][:install_path]}conf/httpd_config.conf" do
   owner litespeed_service[:username]
   group litespeed_service[:groups]['primary']
   variables(
-    server_name:       node[:hostname],
-    php_packages_item: data_bag_item('packages', node[:olyn_litespeed][:php_packages_data_bag_item]),
-    vhosts_data_bag:   data_bag('litespeed_vhosts'),
-    runner_item:       data_bag_item('litespeed_users', node[:olyn_litespeed][:users][:runner_data_bag_item])
+    server_name:            node[:hostname],
+    memory_io_buffer:       node[:olyn_litespeed][:server_configs][:memory_io_buffer],
+    show_version_number:    node[:olyn_litespeed][:server_configs][:show_version_number],
+    use_ip_in_proxy_header: node[:olyn_litespeed][:server_configs][:use_ip_in_proxy_header],
+    index_files:            node[:olyn_litespeed][:server_configs][:index_files],
+    php_packages_item:      data_bag_item('packages', node[:olyn_litespeed][:php_packages_data_bag_item]),
+    vhosts_data_bag:        data_bag('litespeed_vhosts'),
+    runner_item:            data_bag_item('litespeed_users', node[:olyn_litespeed][:users][:runner_data_bag_item])
   )
   notifies :restart, 'service[litespeed]', :delayed
 end
