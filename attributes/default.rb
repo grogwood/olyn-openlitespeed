@@ -30,3 +30,9 @@ default[:olyn_litespeed][:users][:service_data_bag_item] = 'litespeed_service'
 
 # Litespeed run as user data bag item
 default[:olyn_litespeed][:users][:runner_data_bag_item] = 'litespeed_runner'
+
+# Server configurations in httpd_config
+default[:olyn_litespeed][:server_configs][:memory_io_buffer] = '120M'
+default[:olyn_litespeed][:server_configs][:show_version_number] = 2
+default[:olyn_litespeed][:server_configs][:use_ip_in_proxy_header] = 2
+default[:olyn_litespeed][:server_configs][:index_files] = 'index.php, index.html, index.htm'
