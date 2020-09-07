@@ -1,5 +1,5 @@
-# Include the common recipe
-include_recipe 'olyn_litespeed::common'
+# Include the services recipe
+include_recipe 'olyn_litespeed::services'
 
 # Grab the litespeed PHP packages data bag item
 php_packages = data_bag_item('packages', node[:olyn_litespeed][:php_packages_data_bag_item])
