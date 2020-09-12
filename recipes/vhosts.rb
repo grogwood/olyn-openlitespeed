@@ -1,5 +1,5 @@
-# Include the common recipe
-include_recipe 'olyn_litespeed::common'
+# Include the services recipe
+include_recipe 'olyn_litespeed::services'
 
 # Load the litespeed service admin data bag item
 litespeed_service = data_bag_item('litespeed_users', node[:olyn_litespeed][:users][:service_data_bag_item])

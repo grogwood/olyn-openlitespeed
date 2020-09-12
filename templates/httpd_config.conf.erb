@@ -3,22 +3,22 @@
 #
 
 #It not set, will use host name as serverName
-serverName                       <%= @server_name %>
+serverName                       <%= @configs[:server_name] %>
 user                             <%= @runner_item[:username] %>
 group                            <%= @runner_item[:groups]['primary'] %>
 priority                         0
 autoRestart                      1
 chrootPath                       /
 enableChroot                     0
-inMemBufSize                     <%= @memory_io_buffer %>
+inMemBufSize                     <%= @configs[:memory_io_buffer] %>
 swappingDir                      /tmp/lshttpd/swap
 autoFix503                       1
 gracefulRestartTimeout           300
 mime                             conf/mime.properties
-showVersionNumber                <%= @show_version_number %>
-useIpInProxyHeader               <%= @use_ip_in_proxy_header %>
+showVersionNumber                <%= @configs[:show_version_number] %>
+useIpInProxyHeader               <%= @configs[:use_ip_in_proxy_header] %>
 adminEmails                      <%= @runner_item[:email] %>
-indexFiles                       <%= @index_files %>
+indexFiles                       <%= @configs[:index_files] %>
 disableWebAdmin                  0
 
 errorlog logs/error.log {
