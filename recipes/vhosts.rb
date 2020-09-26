@@ -2,7 +2,7 @@
 include_recipe 'olyn_litespeed::services'
 
 # Load the litespeed service admin data bag item
-litespeed_service = data_bag_item('litespeed_users', node[:olyn_litespeed][:users][:service_data_bag_item])
+litespeed_service = data_bag_item('litespeed_users', node[:olyn_litespeed][:service][:user][:data_bag_item])
 
 # Loop through each VHOST in the data bag
 data_bag('litespeed_vhosts').each do |vhost_item|
@@ -14,7 +14,7 @@ data_bag('litespeed_vhosts').each do |vhost_item|
   vhost_user = data_bag_item('system_users', vhost[:user_data_bag_item])
 
   # Create the base vhost folder
-  directory "#{node[:olyn_litespeed][:www_path]}#{vhost[:name]}" do
+  directory "#{node[:olyn_litespeed][:www][:dir]}/#{vhost[:name]}" do
     mode 0755
     owner vhost_user[:username]
     group vhost_user[:groups]['primary']
@@ -23,7 +23,7 @@ data_bag('litespeed_vhosts').each do |vhost_item|
   end
 
   # Create the vhost logs root
-  directory "#{node[:olyn_litespeed][:www_path]}#{vhost[:name]}/logs" do
+  directory "#{node[:olyn_litespeed][:www][:dir]}/#{vhost[:name]}/logs" do
     mode 0755
     owner vhost_user[:username]
     group vhost_user[:groups]['primary']
@@ -32,7 +32,7 @@ data_bag('litespeed_vhosts').each do |vhost_item|
   end
 
   # Create the vhost document root
-  directory "#{node[:olyn_litespeed][:www_path]}#{vhost[:name]}/#{vhost[:document_root]}" do
+  directory "#{node[:olyn_litespeed][:www][:dir]}/#{vhost[:name]}/#{vhost[:document_root]}" do
     mode 0755
     owner vhost_user[:username]
     group vhost_user[:groups]['primary']
@@ -41,8 +41,8 @@ data_bag('litespeed_vhosts').each do |vhost_item|
   end
 
   # Create the vhost folder
-  directory "#{node[:olyn_litespeed][:install_path]}conf/vhosts/#{vhost[:name]}" do
-    mode 0755
+  directory "#{node[:olyn_litespeed][:application][:dir]}/conf/vhosts/#{vhost[:name]}" do
+    mode 0750
     owner litespeed_service[:username]
     group litespeed_service[:groups]['primary']
     recursive true
@@ -58,18 +58,20 @@ data_bag('litespeed_vhosts').each do |vhost_item|
     # Write the HTPASSWD file
     bash "generate_#{realm[:name]}_htpasswd" do
       code <<-ENDOFCODE
-          printf "#{realm_user[:username]}:`openssl passwd -apr1 #{realm_user[:password]}`\n" > #{node[:olyn_litespeed][:install_path]}conf/vhosts/#{vhost[:name]}/#{realm[:name]}
-          touch #{Chef::Config[:file_cache_path]}/litespeed.htpasswd.#{vhost[:name]}.#{realm[:name]}.lock
+          printf "#{realm_user[:username]}:`openssl passwd -apr1 #{realm_user[:password]}`\n" > #{node[:olyn_litespeed][:application][:dir]}/conf/vhosts/#{vhost[:name]}/#{realm[:name]}
+          touch #{Chef::Config[:olyn_application_data_path]}/lock/olyn_litespeed.generate_#{realm[:name]}_htpasswd.lock
       ENDOFCODE
       user 'root'
-      creates "#{Chef::Config[:file_cache_path]}/litespeed.htpasswd.#{vhost[:name]}.#{realm[:name]}.lock"
+      group 'root'
       sensitive true
+      creates "#{Chef::Config[:olyn_application_data_path]}/lock/olyn_litespeed.generate_#{realm[:name]}_htpasswd.lock"
+      action :run
       notifies :restart, 'service[litespeed]', :delayed
     end
 
     # Set our file permissions on the generated htpasswd file
-    file "#{node[:olyn_litespeed][:install_path]}conf/vhosts/#{vhost[:name]}/#{realm[:name]}" do
-      mode 0644
+    file "#{node[:olyn_litespeed][:application][:dir]}/conf/vhosts/#{vhost[:name]}/#{realm[:name]}" do
+      mode 0750
       owner litespeed_service[:username]
       group litespeed_service[:groups]['primary']
       notifies :restart, 'service[litespeed]', :delayed
@@ -78,9 +80,9 @@ data_bag('litespeed_vhosts').each do |vhost_item|
   end
 
   # Write the VHOST config
-  template "#{node[:olyn_litespeed][:install_path]}conf/vhosts/#{vhost[:name]}/#{vhost[:name]}.conf" do
+  template "#{node[:olyn_litespeed][:application][:dir]}/conf/vhosts/#{vhost[:name]}/#{vhost[:name]}.conf" do
     source 'vhost.conf.erb'
-    mode 0644
+    mode 0750
     owner litespeed_service[:username]
     group litespeed_service[:groups]['primary']
     variables(

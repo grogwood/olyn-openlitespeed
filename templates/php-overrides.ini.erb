@@ -14,10 +14,11 @@ zlib.output_compression = On
 expose_php = Off
 
 ; Enable custom extensions
+; These are already typically enabled by Litespeed when the extensions are installed
 ;extension=gd.so
 ;extension=gd2.so
-extension=pdo.so
-extension=pdo_mysql.so
+;extension=pdo.so
+;extension=pdo_mysql.so
 
 ; Set timezone
 date.timezone = Etc/UTC
@@ -26,7 +27,8 @@ date.timezone = Etc/UTC
 intl.default_locale = en
 
 ; Opcache settings
-zend_extension=opcache.so
+; The extension is already typically enabled by Litespeed when it is installed
+;zend_extension=opcache.so
 opcache.enable=1
 opcache.enable_cli=1
 opcache.memory_consumption=256
