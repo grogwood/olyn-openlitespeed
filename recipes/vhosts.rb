@@ -24,7 +24,7 @@ data_bag('litespeed_vhosts').each do |vhost_item|
 
   # Create the vhost logs root
   directory "#{node[:olyn_litespeed][:www][:dir]}/#{vhost[:name]}/logs" do
-    mode 0755
+    mode 0775
     owner vhost_user[:username]
     group vhost_user[:groups]['primary']
     recursive true
