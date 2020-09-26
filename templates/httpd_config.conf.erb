@@ -209,7 +209,7 @@ nodeDefaults{
 <% @vhosts_data_bag.each do |vhost_item| -%>
 <% vhost = Chef::DataBagItem.load( 'litespeed_vhosts', vhost_item )-%>
 virtualHost <%= vhost[:name] %>{
-    vhRoot                   <%= node[:olyn_litespeed][:www_path] %><%= vhost[:name] %>/
+    vhRoot                   <%= node[:olyn_litespeed][:www][:dir] %>/<%= vhost[:name] %>/
     allowSymbolLink          1
     enableScript             1
     restrained               1
