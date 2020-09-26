@@ -25,6 +25,11 @@ bash 'litespeed_webadmin_password' do
   notifies :restart, 'service[litespeed]', :delayed
 end
 
+# Remove the plain text file with the default admin/password that the installer creates
+file "#{node[:olyn_litespeed][:application][:dir]}/adminpasswd" do
+  action :delete
+end
+
 # Load the litespeed service admin data bag item
 litespeed_service = data_bag_item('litespeed_users', node[:olyn_litespeed][:service][:user][:data_bag_item])
 
