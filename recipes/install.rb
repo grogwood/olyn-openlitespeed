@@ -13,7 +13,7 @@ litespeed_webadmin = data_bag_item('litespeed_users', node[:olyn_litespeed][:web
 # Set the litespeed webadmin password
 bash 'litespeed_webadmin_password' do
   code <<-ENDOFCODE
-    ENCRYPT_PASS=`#{node[:olyn_litespeed][:application][:dir]}/admin/fcgi-bin/admin_php -q #{node[:olyn_litespeed][:application][:dir]}admin/misc/htpasswd.php '#{litespeed_webadmin[:password]}'`
+    ENCRYPT_PASS=`#{node[:olyn_litespeed][:application][:dir]}/admin/fcgi-bin/admin_php -q #{node[:olyn_litespeed][:application][:dir]}/admin/misc/htpasswd.php '#{litespeed_webadmin[:password]}'`
     echo "#{litespeed_webadmin[:username]}:$ENCRYPT_PASS" > #{node[:olyn_litespeed][:application][:dir]}/admin/conf/htpasswd
     touch #{Chef::Config[:olyn_application_data_path]}/lock/olyn_litespeed.litespeed_webadmin_password.lock
   ENDOFCODE
