@@ -86,12 +86,7 @@ data_bag('litespeed_vhosts').each do |vhost_item|
     owner litespeed_service[:username]
     group litespeed_service[:groups]['primary']
     variables(
-      vhost_item:        vhost,
-      rewrites_data_bag: begin
-                           data_bag('litespeed_rewrites')
-                         rescue Net::HTTPServerException, Chef::Exceptions::InvalidDataBagPath
-                           []
-                         end
+      vhost_item:        vhost
     )
     notifies :restart, 'service[litespeed]', :delayed
   end
