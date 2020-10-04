@@ -6,7 +6,7 @@ license 'GPL-3.0'
 supports 'debian', '>= 10'
 source_url 'https://gitlab.com/olyn/olyn_litespeed'
 description 'Installs and configures Openlitespeed locally on the server'
-version '1.2.2'
+version '1.2.3'
 
 provides 'olyn_litespeed::default'
 provides 'olyn_litespeed::install'
