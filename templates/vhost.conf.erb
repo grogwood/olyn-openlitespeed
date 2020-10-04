@@ -17,16 +17,8 @@ context <%= context[:url] %> {
 
   rewrite {
     enable <%= context[:rewrite][:enable] ? 1 : 0 %>
-    inherit <%= context[:rewrite][:inherit] ? 1 : 0 %>
+    inherit
     base <%= context[:rewrite][:base] %>
-    <% if context[:rewrite][:rewrite_data_bag_item] -%>
-    rules <<<END_rules
-      <% rules_item = Chef::DataBagItem.load( 'litespeed_rewrites', context[:rewrite][:rewrite_data_bag_item] ) -%>
-      <% rules_item[:rules].each do |rule| -%>
-        <%= rule %>
-      <% end -%>
-    END_rules
-    <% end -%>
   }
 }
 <% end -%>
@@ -76,14 +68,6 @@ awstats {
 rewrite {
   enable <%= @vhost_item[:rewrite][:enable] ? 1 : 0 %>
   logLevel 0
-<% if @vhost_item[:rewrite][:rewrite_data_bag_item] -%>
-  rules <<<END_rules
-  <% rules_item = Chef::DataBagItem.load( 'litespeed_rewrites', @vhost_item[:rewrite][:rewrite_data_bag_item] ) -%>
-  <% rules_item[:rules].each do |rule| -%>
-    <%= rule %>
-  <% end -%>
-  END_rules
-<% end -%>
 }
 
 hotlinkCtrl {
