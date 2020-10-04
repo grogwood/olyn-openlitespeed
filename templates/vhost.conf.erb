@@ -43,7 +43,7 @@ errorPage <%= error[:code] %>{
 errorlog $VH_ROOT/logs/error.log{
   logLevel DEBUG
   rollingSize 10M
-  useServer 1
+  useServer 0
 }
 
 accessLog $VH_ROOT/logs/access.log{
