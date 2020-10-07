@@ -18,7 +18,7 @@ mime                             conf/mime.properties
 showVersionNumber                <%= @configs[:show_version_number] %>
 useIpInProxyHeader               <%= @configs[:use_ip_in_proxy_header] %>
 adminEmails                      <%= @runner_item[:email] %>
-indexFiles                       <%= unless @configs[:index_files].empty? @configs[:index_files].join(', ') %>
+indexFiles                       <%= @configs[:index_files].join(', ') unless @configs[:index_files].empty? %>
 autoLoadHtaccess                 1
 disableWebAdmin                  0
 
@@ -39,7 +39,7 @@ accessLog logs/access.log {
 
 expires {
     enableExpires           <%= @configs[:expires][:enable] ? 1 : 0 %>
-    expiresByType           <%= unless @configs[:expires][:types].empty? @configs[:expires][:types].join(',') %>
+    expiresByType           <%= @configs[:expires][:types].join(',') unless @configs[:expires][:types].empty? %>
 }
 
 tuning{

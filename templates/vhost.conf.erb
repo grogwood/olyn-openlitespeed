@@ -25,12 +25,12 @@ context <%= context[:url] %> {
 
 expires {
   enableExpires <%= @vhost_item[:expires][:enable] ? 1 : 0 %>
-  expiresByType <%= unless @vhost_item[:expires][:types].empty? @vhost_item[:expires][:types].join(',') %>
+  expiresByType <%= @vhost_item[:expires][:types].join(',') unless @vhost_item[:expires][:types].empty? %>
 }
 
 index {
   autoIndexURI /_autoindex/default.php
-  indexFiles <%= unless @vhost_item[:index_files].empty? @vhost_item[:index_files].join(', ') %>
+  indexFiles <%= @vhost_item[:index_files].join(', ') unless @vhost_item[:index_files].empty? %>
   autoIndex 0
   useServer 0
 }
