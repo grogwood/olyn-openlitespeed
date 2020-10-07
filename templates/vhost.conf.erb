@@ -24,7 +24,8 @@ context <%= context[:url] %> {
 <% end -%>
 
 expires {
-  enableExpires 1
+  enableExpires <%= @vhost_item[:expires][:enable] ? 1 : 0 %>
+  expiresByType <%= unless @vhost_item[:expires][:types].empty? @vhost_item[:expires][:types].join(',') %>
 }
 
 index {
