@@ -9,6 +9,8 @@ context <%= context[:url] %> {
   <% if context[:realm] -%>
   realm <%= context[:realm] %>
   <% end -%>
+  enableExpires <%= context[:expires][:enable] ? 1 : 0 %>
+  expiresByType <%= context[:expires][:types].join(',') unless context[:expires][:types].empty? %>
 
   accessControl {
     deny
