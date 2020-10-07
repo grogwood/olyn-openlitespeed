@@ -96,3 +96,13 @@ realm <%= realm[:name] %> {
 general {
   enableContextAC 0
 }
+
+<% @vhost_item[:modules].each do |vhost_module| -%>
+module <%= vhost_module[:name] %> {
+  ls_enabled <%= vhost_module[:enable] ? 1 : 0 %>
+
+  <% vhost_module[:configs].each do |config_name, config_value| -%>
+  <%= config_name %> <%= config_value %>
+  <% end -%>
+}
+<% end -%>
