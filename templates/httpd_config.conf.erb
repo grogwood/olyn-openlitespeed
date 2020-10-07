@@ -38,8 +38,8 @@ accessLog logs/access.log {
 }
 
 expires {
-    enableExpires           1
-    expiresByType           image/*=A604800,text/css=A604800,application/x-javascript=A604800,application/javascript=A604800,font/*=A604800,application/x-font-ttf=A604800
+    enableExpires           <%= @configs[:expires][:enable] ? 1 : 0 %>
+    expiresByType           <%= @configs[:expires][:types].join(',') %>
 }
 
 tuning{

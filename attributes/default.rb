@@ -36,6 +36,19 @@ default[:olyn_litespeed][:server][:config][:show_version_number] = 2
 default[:olyn_litespeed][:server][:config][:use_ip_in_proxy_header] = 2
 default[:olyn_litespeed][:server][:config][:index_files] = ['index.php', 'index.html', 'index.htm']
 
+# Server default expirations
+default[:olyn_litespeed][:server][:config][:expires][:enable] = true
+default[:olyn_litespeed][:server][:config][:expires][:types]  = [
+  'image/*=A604800',
+  'text/css=A604800',
+  'application/x-javascript=A604800',
+  'application/javascript=A604800',
+  'font/*=A604800',
+  'application/x-font-ttf=A604800',
+  'application/font-woff=A604800',
+  'application/font-woff2=A604800'
+]
+
 # PHP packages data bag item
 default[:olyn_litespeed][:php][:package][:data_bag_item] = 'litespeed_php'
 
