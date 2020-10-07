@@ -34,7 +34,7 @@ default[:olyn_litespeed][:webadmin][:user][:data_bag_item] = 'litespeed_webadmin
 default[:olyn_litespeed][:server][:config][:memory_io_buffer] = '120M'
 default[:olyn_litespeed][:server][:config][:show_version_number] = 2
 default[:olyn_litespeed][:server][:config][:use_ip_in_proxy_header] = 2
-default[:olyn_litespeed][:server][:config][:index_files] = 'index.php, index.html, index.htm'
+default[:olyn_litespeed][:server][:config][:index_files] = ['index.php', 'index.html', 'index.htm']
 
 # PHP packages data bag item
 default[:olyn_litespeed][:php][:package][:data_bag_item] = 'litespeed_php'

@@ -18,7 +18,7 @@ mime                             conf/mime.properties
 showVersionNumber                <%= @configs[:show_version_number] %>
 useIpInProxyHeader               <%= @configs[:use_ip_in_proxy_header] %>
 adminEmails                      <%= @runner_item[:email] %>
-indexFiles                       <%= @configs[:index_files] %>
+indexFiles                       <%= @configs[:index_files].join(', ') %>
 autoLoadHtaccess                 1
 disableWebAdmin                  0
 
