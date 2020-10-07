@@ -29,7 +29,7 @@ expires {
 
 index {
   autoIndexURI /_autoindex/default.php
-  indexFiles <%= @vhost_item[:index_files].join(', ') %>
+  indexFiles <%= unless @vhost_item[:index_files].empty? @vhost_item[:index_files].join(', ') %>
   autoIndex 0
   useServer 0
 }
