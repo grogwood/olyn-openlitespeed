@@ -11,6 +11,11 @@ context <%= context[:url] %> {
   <% end -%>
   enableExpires <%= context[:expires][:enable] ? 1 : 0 %>
   expiresByType <%= context[:expires][:types].join(',') unless context[:expires][:types].empty? %>
+  <% unless context[:headers].empty? -%>
+  extraHeaders <<<END_extraHeaders
+<%= context[:headers].join("\n") %>
+  END_extraHeaders
+  <% end -%>
 
   accessControl {
     deny
