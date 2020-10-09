@@ -37,7 +37,7 @@ context exp:^.*(<%= @vhost_item[:no_cache_urls].join('|') %>)$ {
   extraHeaders <<<END_extraHeaders
 unset Cache-control
 unset Expires
-set Cache-control no-store, no-cache, must-revalidate
+set Cache-control max-age=0, private, no-cache
   END_extraHeaders
 
   accessControl {
