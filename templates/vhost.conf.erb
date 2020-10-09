@@ -30,6 +30,23 @@ context <%= context[:url] %> {
 }
 <% end -%>
 
+<% unless @vhost_item[:no_cache_urls].empty? -%>
+context exp:^.*(<%= @vhost_item[:no_cache_urls].join('|') %>)$ {
+  allowBrowse 1
+  location $DOC_ROOT/$0
+  extraHeaders <<<END_extraHeaders
+unset Cache-control
+unset Expires
+set Cache-control no-store, no-cache, must-revalidate
+  END_extraHeaders
+
+  accessControl {
+    deny
+    allow *
+  }
+}
+<% end -%>
+
 expires {
   enableExpires <%= @vhost_item[:expires][:enable] ? 1 : 0 unless @vhost_item[:expires][:enable].nil? %>
   expiresByType <%= @vhost_item[:expires][:types].join(',') unless @vhost_item[:expires][:types].empty? %>
