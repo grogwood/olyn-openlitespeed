@@ -9,6 +9,13 @@ context <%= context[:url] %> {
   <% if context[:realm] -%>
   realm <%= context[:realm] %>
   <% end -%>
+  enableExpires <%= context[:expires][:enable] ? 1 : 0 unless context[:expires][:enable].nil? %>
+  expiresByType <%= context[:expires][:types].join(',') unless context[:expires][:types].empty? %>
+  <% unless context[:headers].empty? -%>
+  extraHeaders <<<END_extraHeaders
+<%= context[:headers].join("\n") %>
+  END_extraHeaders
+  <% end -%>
 
   accessControl {
     deny
@@ -16,20 +23,38 @@ context <%= context[:url] %> {
   }
 
   rewrite {
-    enable <%= context[:rewrite][:enable] ? 1 : 0 %>
+    enable <%= context[:rewrite][:enable] ? 1 : 0 unless context[:rewrite][:enable].nil? %>
     inherit
     base <%= context[:rewrite][:base] %>
   }
 }
 <% end -%>
 
+<% unless @vhost_item[:no_cache_urls].empty? -%>
+context exp:^.*(<%= @vhost_item[:no_cache_urls].join('|') %>)$ {
+  allowBrowse 1
+  location $DOC_ROOT/$0
+  extraHeaders <<<END_extraHeaders
+unset Cache-control
+unset Expires
+set Cache-control no-store, no-cache, must-revalidate
+  END_extraHeaders
+
+  accessControl {
+    deny
+    allow *
+  }
+}
+<% end -%>
+
 expires {
-  enableExpires 1
+  enableExpires <%= @vhost_item[:expires][:enable] ? 1 : 0 unless @vhost_item[:expires][:enable].nil? %>
+  expiresByType <%= @vhost_item[:expires][:types].join(',') unless @vhost_item[:expires][:types].empty? %>
 }
 
 index {
   autoIndexURI /_autoindex/default.php
-  indexFiles <%= @vhost_item[:index_files] %>
+  indexFiles <%= @vhost_item[:index_files].join(', ') unless @vhost_item[:index_files].empty? %>
   autoIndex 0
   useServer 0
 }
@@ -66,7 +91,8 @@ awstats {
 }
 
 rewrite {
-  enable <%= @vhost_item[:rewrite][:enable] ? 1 : 0 %>
+  enable <%= @vhost_item[:rewrite][:enable] ? 1 : 0 unless @vhost_item[:rewrite][:enable].nil? %>
+  autoLoadHtaccess <%= @vhost_item[:rewrite][:auto_load_htaccess] ? 1 : 0 unless @vhost_item[:rewrite][:auto_load_htaccess].nil? %>
   logLevel 0
 }
 
