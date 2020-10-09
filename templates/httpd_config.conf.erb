@@ -38,7 +38,7 @@ accessLog logs/access.log {
 }
 
 expires {
-    enableExpires           <%= @configs[:expires][:enable] ? 1 : 0 %>
+    enableExpires           <%= @configs[:expires][:enable] ? 1 : 0 unless @configs[:expires][:enable].nil? %>
     expiresByType           <%= @configs[:expires][:types].join(',') unless @configs[:expires][:types].empty? %>
 }
 

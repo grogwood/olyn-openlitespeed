@@ -9,7 +9,7 @@ context <%= context[:url] %> {
   <% if context[:realm] -%>
   realm <%= context[:realm] %>
   <% end -%>
-  enableExpires <%= context[:expires][:enable] ? 1 : 0 %>
+  enableExpires <%= context[:expires][:enable] ? 1 : 0 unless context[:expires][:enable].nil? %>
   expiresByType <%= context[:expires][:types].join(',') unless context[:expires][:types].empty? %>
   <% unless context[:headers].empty? -%>
   extraHeaders <<<END_extraHeaders
@@ -23,7 +23,7 @@ context <%= context[:url] %> {
   }
 
   rewrite {
-    enable <%= context[:rewrite][:enable] ? 1 : 0 %>
+    enable <%= context[:rewrite][:enable] ? 1 : 0 unless context[:rewrite][:enable].nil? %>
     inherit
     base <%= context[:rewrite][:base] %>
   }
@@ -31,7 +31,7 @@ context <%= context[:url] %> {
 <% end -%>
 
 expires {
-  enableExpires <%= @vhost_item[:expires][:enable] ? 1 : 0 %>
+  enableExpires <%= @vhost_item[:expires][:enable] ? 1 : 0 unless @vhost_item[:expires][:enable].nil? %>
   expiresByType <%= @vhost_item[:expires][:types].join(',') unless @vhost_item[:expires][:types].empty? %>
 }
 
@@ -74,7 +74,7 @@ awstats {
 }
 
 rewrite {
-  enable <%= @vhost_item[:rewrite][:enable] ? 1 : 0 %>
+  enable <%= @vhost_item[:rewrite][:enable] ? 1 : 0 unless @vhost_item[:rewrite][:enable].nil? %>
   logLevel 0
 }
 
