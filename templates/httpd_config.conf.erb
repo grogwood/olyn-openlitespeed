@@ -19,7 +19,7 @@ showVersionNumber                <%= @configs[:show_version_number] %>
 useIpInProxyHeader               <%= @configs[:use_ip_in_proxy_header] %>
 adminEmails                      <%= @runner_item[:email] %>
 indexFiles                       <%= @configs[:index_files].join(', ') unless @configs[:index_files].empty? %>
-autoLoadHtaccess                 1
+autoLoadHtaccess                 <%= @configs[:auto_load_htaccess] ? 1 : 0 unless @configs[:auto_load_htaccess].nil? %>
 disableWebAdmin                  0
 
 errorlog logs/error.log {

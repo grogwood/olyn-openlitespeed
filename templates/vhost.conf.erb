@@ -75,6 +75,7 @@ awstats {
 
 rewrite {
   enable <%= @vhost_item[:rewrite][:enable] ? 1 : 0 unless @vhost_item[:rewrite][:enable].nil? %>
+  autoLoadHtaccess <%= @vhost_item[:rewrite][:auto_load_htaccess] ? 1 : 0 unless @vhost_item[:rewrite][:auto_load_htaccess].nil? %>
   logLevel 0
 }
 

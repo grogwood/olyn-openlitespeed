@@ -59,6 +59,7 @@ template "#{node[:olyn_litespeed][:application][:dir]}/conf/httpd_config.conf" d
       show_version_number:    node[:olyn_litespeed][:server][:config][:show_version_number],
       use_ip_in_proxy_header: node[:olyn_litespeed][:server][:config][:use_ip_in_proxy_header],
       index_files:            node[:olyn_litespeed][:server][:config][:index_files],
+      auto_load_htaccess:     node[:olyn_litespeed][:server][:config][:auto_load_htaccess],
       expires: {
         enable: node[:olyn_litespeed][:server][:config][:expires][:enable],
         types: node[:olyn_litespeed][:server][:config][:expires][:types]

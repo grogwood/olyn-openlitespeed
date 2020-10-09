@@ -35,6 +35,7 @@ default[:olyn_litespeed][:server][:config][:memory_io_buffer] = '120M'
 default[:olyn_litespeed][:server][:config][:show_version_number] = 2
 default[:olyn_litespeed][:server][:config][:use_ip_in_proxy_header] = 2
 default[:olyn_litespeed][:server][:config][:index_files] = ['index.php', 'index.html', 'index.htm']
+default[:olyn_litespeed][:server][:config][:auto_load_htaccess] = false
 
 # Server default expirations
 default[:olyn_litespeed][:server][:config][:expires][:enable] = true
