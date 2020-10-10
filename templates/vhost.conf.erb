@@ -24,7 +24,7 @@ context <%= context[:url] %> {
 
   rewrite {
     enable <%= context[:rewrite][:enable] ? 1 : 0 unless context[:rewrite][:enable].nil? %>
-    inherit
+    inherit <%= context[:rewrite][:inherit] ? 1 : 0 unless context[:rewrite][:inherit].nil? %>
     base <%= context[:rewrite][:base] %>
   }
 }
